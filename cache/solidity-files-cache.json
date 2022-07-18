@@ -1,0 +1,208 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "F:\\Totos\\Totos-Contract\\contracts\\GenesisTotos.sol": {
+      "lastModificationDate": 1658122001262,
+      "contentHash": "ee194911922e2a49070918a50853da87",
+      "sourceName": "contracts/GenesisTotos.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.7"
+      ],
+      "artifacts": [
+        "Context",
+        "ERC721A",
+        "ERC721A__IERC721Receiver",
+        "GenesisTotos",
+        "IERC721A",
+        "IMetaTicket",
+        "Ownable",
+        "Strings"
+      ]
+    },
+    "F:\\Totos\\Totos-Contract\\contracts\\MetaTicket.sol": {
+      "lastModificationDate": 1658112869334,
+      "contentHash": "a61ebe5e306170757a894a5da6c31e5f",
+      "sourceName": "contracts/MetaTicket.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.7"
+      ],
+      "artifacts": [
+        "Address",
+        "Context",
+        "ERC1155",
+        "ERC165",
+        "IERC1155",
+        "IERC1155MetadataURI",
+        "IERC1155Receiver",
+        "IERC165",
+        "MetaTicket",
+        "Ownable",
+        "Strings"
+      ]
+    },
+    "F:\\Totos\\Totos-Contract\\contracts\\TotosStaking.sol": {
+      "lastModificationDate": 1658130350451,
+      "contentHash": "1518fc1c9dda537fdbffdc0ca01507e1",
+      "sourceName": "contracts/TotosStaking.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Context",
+        "IGenesisTotos",
+        "ITotosToken",
+        "Ownable",
+        "TotosStaking"
+      ]
+    },
+    "F:\\Totos\\Totos-Contract\\contracts\\TotosToken.sol": {
+      "lastModificationDate": 1658130092618,
+      "contentHash": "0189a9780e33fff318accd00ee31050b",
+      "sourceName": "contracts/TotosToken.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Context",
+        "ERC20",
+        "IERC20",
+        "IERC20Metadata",
+        "Ownable",
+        "TotosToken"
+      ]
+    },
+    "F:\\Totos\\Totos-Contract\\node_modules\\hardhat\\console.sol": {
+      "lastModificationDate": 1658112578914,
+      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    }
+  }
+}
