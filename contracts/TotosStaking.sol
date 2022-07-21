@@ -4,29 +4,6 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "hardhat/console.sol";
 
-interface IGenesisTotos {
-    event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
-    event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
-    event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
-
-    function balanceOf(address _owner) external view returns (uint256);
-    function ownerOf(uint256 _tokenId) external view returns (address);
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes memory data) external payable;
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable;
-    function transferFrom(address _from, address _to, uint256 _tokenId) external payable;
-    function transfer(address recipient, uint256 amount) external returns (bool);
-    function approve(address _approved, uint256 _tokenId) external payable;
-    function setApprovalForAll(address _operator, bool _approved) external;
-    function getApproved(uint256 _tokenId) external view returns (address);
-    function isApprovedForAll(address _owner, address _operator) external view returns (bool);
-
-    function locked(uint256) external view returns(bool);
-    function stage(uint256) external view returns(uint);
-
-    function lockToken(uint256 tokenId) external;
-    function unlockToken(uint256 tokenId) external;
-}
-
 interface ITotosToken {
     function totalSupply() external view returns (uint256);
     function balanceOf(address account) external view returns (uint256);
@@ -112,65 +89,52 @@ abstract contract Ownable is Context {
 }
 
 contract TotosStaking is Ownable {
-    address genesisAddress;
     address tokenAddress;
 
-    uint[4] rewardRatio = [100, 150, 170, 200]; // *1, *1.5, *1.7, *2
-    uint[4] stakingPeriod = [90, 180, 270, 360]; // 3 month, 6 months, 9 months, 12 months
-
-    uint rewardPerDay = 50;
+    uint rewardPerDay = 77;
     uint decimals = 18;
+
+    uint[4] public stakingPeriod = [90, 180, 270, 360];
 
     mapping(uint => bool) public onStaking;
     mapping(uint => uint) public period;
     mapping(uint => uint) public startTime;
+    mapping(uint => uint) public multiplier;
 
-    modifier onlyTokenOwner(uint _tokenId) {
-        address tokenOwner = IGenesisTotos(genesisAddress).ownerOf(_tokenId);
-        require(tokenOwner == msg.sender, "You are not the owner of this token.");
-        _;
-    }
-    
-    constructor(address _genesisAddress, address _tokenAddress) {
-        genesisAddress = _genesisAddress;
+    constructor(address _tokenAddress) {
         tokenAddress = _tokenAddress;
     }
 
-    function stake(uint _tokenId, uint _period) external onlyTokenOwner(_tokenId) returns(bool) {
+    function stake(uint _tokenId, uint _period, uint _multiplier) external onlyOwner returns(bool) {
         require(onStaking[_tokenId] == false, "This token is already on staking.");
-        require(IGenesisTotos(genesisAddress).locked(_tokenId) == false, "This token is locked.");
 
-        IGenesisTotos(genesisAddress).lockToken(_tokenId);
         period[_tokenId] = _period;
         onStaking[_tokenId] = true;
         startTime[_tokenId] = block.timestamp;
+        multiplier[_tokenId] = _multiplier;
+        
         return true;
     }
 
-    function unstake(uint _tokenId) external onlyTokenOwner(_tokenId) {
+    function unstake(uint _tokenId) external onlyOwner {
         require(onStaking[_tokenId] == true, "This token is not on staking.");
 
         uint endTime = startTime[_tokenId] + stakingPeriod[period[_tokenId]] * (1 days);
 
         require(endTime <= block.timestamp, "Staking hasn't finished yet.");
 
-        uint stage = IGenesisTotos(genesisAddress).stage(_tokenId);
         uint reward = rewardPerDay * stakingPeriod[period[_tokenId]];
-        reward = reward * rewardRatio[stage] / 100;
-        reward = reward * rewardRatio[period[_tokenId]] / 100;
-        reward = reward * 10 ** decimals;
+        reward = reward * 10 ** (decimals - 3);
 
         ITotosToken(tokenAddress).transfer(msg.sender, reward);
 
         onStaking[_tokenId] = false;
-        IGenesisTotos(genesisAddress).unlockToken(_tokenId);
     }
 
-    function forceUnstake(uint _tokenId) external onlyTokenOwner(_tokenId) {
+    function forceUnstake(uint _tokenId) external {
         require(onStaking[_tokenId] == true, "This token is not on staking.");
 
         onStaking[_tokenId] = false;
-        IGenesisTotos(genesisAddress).unlockToken(_tokenId);
     }
 
 }

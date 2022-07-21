@@ -1382,93 +1382,44 @@ library Strings {
     }
 }
 
-
-interface IMetaTicket {
-    function balanceOf(address account, uint256 id) external view returns (uint256);
-    function burn(address owner, uint tokenId) external;
-}
-
-
 // GenesisTotosNFT
 contract GenesisTotos is ERC721A, Ownable {
     
     using Strings for uint256;
 
     uint public maxSupply = 333;
-    uint public mintPrice = 0.01 ether;
     uint public maxPerTx = 15;
     uint public maxPerWallet = 25;
 
-    address ticketAddress;
-    address stakingAddress;
-    
     mapping(uint => bool) public locked;
-    mapping(uint => uint) public stage;
 
-    string[4] public uris = [
-        "https://gateway.pinata.cloud/ipfs/QmVvFWbMMuLQGmft1hk4KVgDW2sbAMyrJ1q2xMGWeHfMGS/",
-        "https://gateway.pinata.cloud/ipfs/QmVvFWbMMuLQGmft1hk4KVgDW2sbAMyrJ1q2xMGWeHfMGS/",
-        "https://gateway.pinata.cloud/ipfs/QmVvFWbMMuLQGmft1hk4KVgDW2sbAMyrJ1q2xMGWeHfMGS/",
-        "https://gateway.pinata.cloud/ipfs/QmVvFWbMMuLQGmft1hk4KVgDW2sbAMyrJ1q2xMGWeHfMGS/"
-    ];
+    string uri = "https://gateway.pinata.cloud/ipfs/QmVvFWbMMuLQGmft1hk4KVgDW2sbAMyrJ1q2xMGWeHfMGS/";
     
-    constructor() ERC721A("GenesisTotos", "TOTOS") {}
+    constructor() ERC721A("Espressionismo Totos", "GENESIS TOTOS") {}
 
-    function mint(uint mintCnt) external payable {
-        require(mintCnt <= maxPerTx, "You can mint max 15 in one transaction.");
-        require(mintCnt + balanceOf(msg.sender) <= maxPerWallet, "You can have max 25 in your wallet.");
-        require(mintCnt * mintPrice <= msg.value, "Insufficient funds.");
-        require(totalSupply() + mintCnt <= maxSupply, "No more NFT");
-        _mint(msg.sender, mintCnt);
+    function mint(address to, uint mintCnt) external onlyOwner {
+        _mint(to, mintCnt);
     }
 
-    function upgradeStage(uint tokenId) external {
-        require(stage[tokenId] < 3, "This token is already on Stage 3");
-        require(locked[tokenId] == false, "This token is on staking.");
-        require(IMetaTicket(ticketAddress).balanceOf(msg.sender, stage[tokenId] + 1) > 0, "You don't have a ticket for upgrade.");
-
-        stage[tokenId] ++;
-        IMetaTicket(ticketAddress).burn(msg.sender, stage[tokenId]);
+    function setBaseURI(string memory _uri) external onlyOwner {
+        uri = _uri;
     }
-
-    function airdrop(address to, uint cnt) external onlyOwner {
-        _mint(to, cnt);
-    }
-
-    function setTicketAddress(address _ticketAddress) external onlyOwner {
-        ticketAddress = _ticketAddress;
-    }
-
-    function setStakingAddress(address _stakingAddress) external onlyOwner {
-        stakingAddress = _stakingAddress;
-    }
-
-    function setBaseURI(string memory uri, uint id) external onlyOwner {
-        uris[id] = uri;
-    }
-
 
     function _baseURI() internal view override returns (string memory) {
-        return uris[0];
+        return uri;
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         if (!_exists(tokenId)) revert URIQueryForNonexistentToken();
 
-        return string(abi.encodePacked(uris[stage[tokenId]], _toString(tokenId), ".json"));
-    }
-
-    function withdraw() external onlyOwner {
-        payable(owner()).transfer(address(this).balance);
+        return string(abi.encodePacked(uri, _toString(tokenId), ".json"));
     }
 
     function lockToken(uint tokenId) external {
-        require(msg.sender == stakingAddress, "Warning: Wrong Permission");
         locked[tokenId] = true;
     }
 
     function unlockToken(uint tokenId) external {
-        require(msg.sender == stakingAddress, "Warning: Wrong Permission");
         locked[tokenId] = false;
     }
 
