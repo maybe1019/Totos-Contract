@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "F:\\Totos\\Totos-Contract\\contracts\\GenesisTotos.sol": {
-      "lastModificationDate": 1658122001262,
-      "contentHash": "ee194911922e2a49070918a50853da87",
+      "lastModificationDate": 1658427146575,
+      "contentHash": "eec590e2729219bb68e687e8a655ac24",
       "sourceName": "contracts/GenesisTotos.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -38,14 +38,13 @@
         "ERC721A__IERC721Receiver",
         "GenesisTotos",
         "IERC721A",
-        "IMetaTicket",
         "Ownable",
         "Strings"
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\MetaTicket.sol": {
-      "lastModificationDate": 1658112869334,
-      "contentHash": "a61ebe5e306170757a894a5da6c31e5f",
+      "lastModificationDate": 1658424663029,
+      "contentHash": "f2a1bc622afffc971eac659aef9d8138",
       "sourceName": "contracts/MetaTicket.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -89,8 +88,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\TotosStaking.sol": {
-      "lastModificationDate": 1658130350451,
-      "contentHash": "1518fc1c9dda537fdbffdc0ca01507e1",
+      "lastModificationDate": 1658415725376,
+      "contentHash": "99de5d63182577e8f8e4fa9c78a4eaac",
       "sourceName": "contracts/TotosStaking.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -123,7 +122,6 @@
       ],
       "artifacts": [
         "Context",
-        "IGenesisTotos",
         "ITotosToken",
         "Ownable",
         "TotosStaking"
@@ -202,6 +200,53 @@
       ],
       "artifacts": [
         "console"
+      ]
+    },
+    "F:\\Totos\\Totos-Contract\\contracts\\EvolutionTotos.sol": {
+      "lastModificationDate": 1658427083649,
+      "contentHash": "979419b854f5a21eb44e25c72d64eddf",
+      "sourceName": "contracts/EvolutionTotos.sol",
+      "solcConfig": {
+        "version": "0.8.7",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Address",
+        "Context",
+        "ERC165",
+        "ERC721",
+        "EvolutionTotos",
+        "IERC165",
+        "IERC721",
+        "IERC721Metadata",
+        "IERC721Receiver",
+        "IGenesisTotos",
+        "IMetaTicket",
+        "Ownable",
+        "Strings"
       ]
     }
   }

@@ -1048,6 +1048,8 @@ contract EvolutionTotos is ERC721, Ownable {
 
     mapping(uint => bool) public unlocked;
 
+    string public uri = "https://expressionismototos.mypinata.cloud/ipfs/QmZqhu38rSQMNTh7f2Yf7wEKdowxmAcmiEJ9FM91Rycbtn/";
+
     constructor(address _genesisAddress, address _ticketAddress)
         ERC721("Espressionismo Evolution Totos", "EVOLUTION TOTOS")
     {
@@ -1073,5 +1075,28 @@ contract EvolutionTotos is ERC721, Ownable {
         IMetaTicket(ticketAddress).burn(msg.sender, ticketTokenId);
         _mint(msg.sender, _tokenId);
         unlocked[_tokenId] = true;
+    }
+
+    function setGenesisAddress(address _genesisAddress) external onlyOwner {
+        genesisAddress = _genesisAddress;
+    }
+
+    function setTicketAddress(address _ticketAddress) external onlyOwner {
+        ticketAddress = _ticketAddress;
+    }
+
+    function setUri(string memory _uri) external onlyOwner {
+        uri = _uri;
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return uri;
+    }
+
+    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        string memory baseURI = _baseURI();
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json")) : "";
     }
 }

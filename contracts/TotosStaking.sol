@@ -108,11 +108,11 @@ contract TotosStaking is Ownable {
     function stake(uint _tokenId, uint _period, uint _multiplier) external onlyOwner returns(bool) {
         require(onStaking[_tokenId] == false, "This token is already on staking.");
 
-        period[_tokenId] = _period;
         onStaking[_tokenId] = true;
+        period[_tokenId] = _period;
         startTime[_tokenId] = block.timestamp;
         multiplier[_tokenId] = _multiplier;
-        
+
         return true;
     }
 

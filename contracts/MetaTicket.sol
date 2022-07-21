@@ -1079,9 +1079,9 @@ contract MetaTicket is ERC1155, Ownable {
     string public name = "Totos Meta Ticket";
     string public symbol = "TOTOS";
 
-    address genesisAddress;
+    address evolutionAddress;
 
-    string _uri;
+    string _uri = "https://expressionismototos.mypinata.cloud/ipfs/QmXzYD1MwUGMEVNrkFYMutVZ5TD1facTXHsje1Ygoy5NFm/";
 
     constructor() ERC1155("ipfs://") {}
 
@@ -1093,16 +1093,20 @@ contract MetaTicket is ERC1155, Ownable {
         _mint(msg.sender, tokenId, amount, "");
     }
 
-    function setGenesisAddress(address addr) external onlyOwner {
-        genesisAddress = addr;
+    function setEvolutionAddress(address _evolutionAddress) external onlyOwner {
+        evolutionAddress = _evolutionAddress;
     }
 
     function setUri(string memory _newUri) external onlyOwner {
         _uri = _newUri;
     }
+    
+    function withdraw() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
 
     function burn(address owner, uint tokenId) external {
-        require(msg.sender == genesisAddress, "You are doing an illegal action.");
+        require(msg.sender == evolutionAddress, "You are doing an illegal action.");
         require(balanceOf(owner, tokenId) > 0, "You don't have ticket.");
 
         _burn(owner, tokenId, 1);
@@ -1112,9 +1116,5 @@ contract MetaTicket is ERC1155, Ownable {
         require(tokenId > 0 && tokenId < 4, "Token Not Exist");
 
         return string(abi.encodePacked(_uri, tokenId.toString(), ".json"));
-    }
-
-    function withdraw() external onlyOwner {
-        payable(owner()).transfer(address(this).balance);
     }
 }
