@@ -1406,12 +1406,14 @@ contract GenesisTotos is ERC721A, Ownable {
         uri = _uri;
     }
     
-    function lockToken(uint tokenId) external onlyOwner {
-        locked[tokenId] = true;
+    function lockToken(uint _tokenId) external {
+        require(msg.sender == ownerOf(_tokenId), "You are noe the owner of this token.");
+        locked[_tokenId] = true;
     }
 
-    function unlockToken(uint tokenId) external onlyOwner {
-        locked[tokenId] = false;
+    function unlockToken(uint _tokenId) external {
+        require(msg.sender == ownerOf(_tokenId), "You are noe the owner of this token.");
+        locked[_tokenId] = false;
     }
 
 
@@ -1419,10 +1421,10 @@ contract GenesisTotos is ERC721A, Ownable {
         return uri;
     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        if (!_exists(tokenId)) revert URIQueryForNonexistentToken();
+    function tokenURI(uint256 _tokenId) public view override returns (string memory) {
+        if (!_exists(_tokenId)) revert URIQueryForNonexistentToken();
 
-        return string(abi.encodePacked(uri, _toString(tokenId), ".json"));
+        return string(abi.encodePacked(uri, _toString(_tokenId), ".json"));
     }
 
     function getOwnedTokens(address _owner) external view returns(uint[] memory) {
