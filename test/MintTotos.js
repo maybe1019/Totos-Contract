@@ -70,7 +70,5 @@ describe("TOTOS Engine", () => {
     await evolutionTotos.connect(acc1).unlockEvolution(334)
     expect(await evolutionTotos.balanceOf(acc1.address)).to.equal(2)
     expect(await evolutionTotos.ownerOf(334)).to.equal(acc1.address)
-
-    console.log(await genesisTotos.tokenURI(1))
   })
 })

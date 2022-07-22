@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "F:\\Totos\\Totos-Contract\\contracts\\GenesisTotos.sol": {
-      "lastModificationDate": 1658427146575,
-      "contentHash": "eec590e2729219bb68e687e8a655ac24",
+      "lastModificationDate": 1658460649294,
+      "contentHash": "4cb0aca6e9834f47f6202461988d4626",
       "sourceName": "contracts/GenesisTotos.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -203,8 +203,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\EvolutionTotos.sol": {
-      "lastModificationDate": 1658427083649,
-      "contentHash": "979419b854f5a21eb44e25c72d64eddf",
+      "lastModificationDate": 1658461135911,
+      "contentHash": "51436934d057fb5f09a084816d6d833f",
       "sourceName": "contracts/EvolutionTotos.sol",
       "solcConfig": {
         "version": "0.8.7",

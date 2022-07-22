@@ -1048,6 +1048,9 @@ contract EvolutionTotos is ERC721, Ownable {
 
     mapping(uint => bool) public unlocked;
 
+    uint[] public liveTokens;
+    uint public totalSupply;
+
     string public uri = "https://expressionismototos.mypinata.cloud/ipfs/QmZqhu38rSQMNTh7f2Yf7wEKdowxmAcmiEJ9FM91Rycbtn/";
 
     constructor(address _genesisAddress, address _ticketAddress)
@@ -1075,6 +1078,8 @@ contract EvolutionTotos is ERC721, Ownable {
         IMetaTicket(ticketAddress).burn(msg.sender, ticketTokenId);
         _mint(msg.sender, _tokenId);
         unlocked[_tokenId] = true;
+        liveTokens.push(_tokenId);
+        totalSupply ++;
     }
 
     function setGenesisAddress(address _genesisAddress) external onlyOwner {
@@ -1098,5 +1103,19 @@ contract EvolutionTotos is ERC721, Ownable {
 
         string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json")) : "";
+    }
+
+    function getOwnedTokens(address _owner) external view returns(uint[] memory) {
+        uint balance = balanceOf(_owner);
+        uint[] memory ownedTokens = new uint[](balance);
+        uint i;
+        uint j = 0;
+        for(i = 0; i < liveTokens.length; i ++) {
+            if(ownerOf(liveTokens[i]) == _owner) {
+                ownedTokens[j++] = liveTokens[i];
+                if(j == balance) break;
+            }
+        }
+        return ownedTokens;
     }
 }

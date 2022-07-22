@@ -1425,6 +1425,19 @@ contract GenesisTotos is ERC721A, Ownable {
         return string(abi.encodePacked(uri, _toString(tokenId), ".json"));
     }
 
+    function getOwnedTokens(address _owner) external view returns(uint[] memory) {
+        uint balance = balanceOf(_owner);
+        uint[] memory ownedTokens = new uint[](balance);
+        uint i;
+        uint j = 0;
+        for(i = 1; i <= totalSupply(); i ++) {
+            if(ownerOf(i) == _owner) {
+                ownedTokens[j++] = i;
+                if(j == balance) break;
+            }
+        }
+        return ownedTokens;
+    }
 
     function _beforeTokenTransfers(
         address from,

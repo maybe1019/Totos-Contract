@@ -15,7 +15,4 @@ module.exports = {
 
 
 /*
-Genesis Address:  0xB1659c4Cc52ABF3ff5955b056e31606F0798DF76
-Metaticket Address:  0x3B96A075E40b439265F2c6415896aEcB53576fe5
-Evolution Address:  0xcA5d8C969B39700E475C7BE15700019deb2f8C0F
 */
