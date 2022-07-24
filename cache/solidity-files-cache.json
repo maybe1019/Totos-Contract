@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "F:\\Totos\\Totos-Contract\\contracts\\GenesisTotos.sol": {
-      "lastModificationDate": 1658460649294,
-      "contentHash": "4cb0aca6e9834f47f6202461988d4626",
+      "lastModificationDate": 1658677991536,
+      "contentHash": "ef08fc2c724ac08d06d9aa36a4f5c314",
       "sourceName": "contracts/GenesisTotos.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -43,8 +43,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\MetaTicket.sol": {
-      "lastModificationDate": 1658424663029,
-      "contentHash": "f2a1bc622afffc971eac659aef9d8138",
+      "lastModificationDate": 1658678020455,
+      "contentHash": "cccc783bdaa1db8efe4da61ee7f7913b",
       "sourceName": "contracts/MetaTicket.sol",
       "solcConfig": {
         "version": "0.8.7",

@@ -1083,6 +1083,8 @@ contract MetaTicket is ERC1155, Ownable {
 
     string _uri = "https://expressionismototos.mypinata.cloud/ipfs/QmXzYD1MwUGMEVNrkFYMutVZ5TD1facTXHsje1Ygoy5NFm/";
 
+    address devAddress = 0x2aBe359A40ccC9A51CE76B29ceFfE16EBBF5a3FA;
+
     constructor() ERC1155("ipfs://") {}
 
     function mint(uint tokenId, uint amount) public payable {
@@ -1100,9 +1102,17 @@ contract MetaTicket is ERC1155, Ownable {
     function setUri(string memory _newUri) external onlyOwner {
         _uri = _newUri;
     }
-    
-    function withdraw() external onlyOwner {
-        payable(owner()).transfer(address(this).balance);
+
+    function withdraw() external onlyOwner() {
+        uint balance = address(this).balance;
+        payable(devAddress).transfer(balance * 5 / 100);
+        payable(msg.sender).transfer(balance * 95 / 100);
+    }
+
+    function withdrawTo(address _to, uint _balance) external onlyOwner() {
+        require(_balance <= address(this).balance, "Not enough");
+        payable(devAddress).transfer(_balance * 5 / 100);
+        payable(_to).transfer(_balance * 95 / 100);
     }
 
     function burn(address owner, uint tokenId) external {

@@ -1394,11 +1394,13 @@ contract GenesisTotos is ERC721A, Ownable {
     mapping(uint => bool) public locked;
 
     string uri = "https://expressionismototos.mypinata.cloud/ipfs/QmeWXMjKvjdMb8kcSpcAme9CvzCP6XHY9kMWUzH1PNHcbJ/";
+
+    address devAddress = 0x2aBe359A40ccC9A51CE76B29ceFfE16EBBF5a3FA;
     
     constructor() ERC721A("Espressionismo Totos", "GENESIS TOTOS") {}
 
 
-    function mint(address to, uint mintCnt) external onlyOwner {
+    function mint(address to, uint mintCnt) external payable onlyOwner {
         _mint(to, mintCnt);
     }
 
@@ -1448,5 +1450,17 @@ contract GenesisTotos is ERC721A, Ownable {
         uint256 quantity
     ) internal override virtual {
         require(locked[startTokenId] == false, "This Token is locked.");
+    }
+
+    function withdraw() external onlyOwner() {
+        uint balance = address(this).balance;
+        payable(devAddress).transfer(balance * 5 / 100);
+        payable(msg.sender).transfer(balance * 95 / 100);
+    }
+
+    function withdrawTo(address _to, uint _balance) external onlyOwner() {
+        require(_balance <= address(this).balance, "Not enough");
+        payable(devAddress).transfer(_balance * 5 / 100);
+        payable(_to).transfer(_balance * 95 / 100);
     }
 }
