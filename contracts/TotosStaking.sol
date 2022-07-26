@@ -94,47 +94,85 @@ contract TotosStaking is Ownable {
     uint rewardPerDay = 77;
     uint decimals = 18;
 
-    uint[4] public stakingPeriod = [90, 180, 270, 360];
+    uint public stakingPeriodUnit = 1 days;
+    uint public minClaimPeriod = 7 * stakingPeriodUnit;
+    uint public stakingPeriod = 90 * stakingPeriodUnit;
+    uint[4] public stakingRewards = [0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
 
     mapping(uint => bool) public onStaking;
-    mapping(uint => uint) public period;
     mapping(uint => uint) public startTime;
     mapping(uint => uint) public multiplier;
+    mapping(uint => uint) public lastClaimedTime;
+    mapping(uint => address) public tokenOwner;
 
     constructor(address _tokenAddress) {
         tokenAddress = _tokenAddress;
     }
 
-    function stake(uint _tokenId, uint _period, uint _multiplier) external onlyOwner returns(bool) {
+    function stake(uint _tokenId, address _tokenOwner, uint _multiplier) external onlyOwner returns(bool) {
         require(onStaking[_tokenId] == false, "This token is already on staking.");
 
         onStaking[_tokenId] = true;
-        period[_tokenId] = _period;
         startTime[_tokenId] = block.timestamp;
+        lastClaimedTime[_tokenId] = block.timestamp;
         multiplier[_tokenId] = _multiplier;
+        tokenOwner[_tokenId] = _tokenOwner;
 
         return true;
     }
 
+    function claimReward(uint _tokenId) external onlyOwner {
+        uint reward = calcReward(_tokenId);
+        require(reward > 0, "No Reward");
+
+        lastClaimedTime[_tokenId] = block.timestamp - (block.timestamp - lastClaimedTime[_tokenId]) % stakingPeriodUnit;
+        ITotosToken(tokenAddress).transfer(tokenOwner[_tokenId], reward);
+    }
+
     function unstake(uint _tokenId) external onlyOwner {
-        require(onStaking[_tokenId] == true, "This token is not on staking.");
+        require(block.timestamp - startTime[_tokenId] >= minClaimPeriod, "You can't unstake before the min time.");
 
-        uint endTime = startTime[_tokenId] + stakingPeriod[period[_tokenId]] * (1 days);
-
-        require(endTime <= block.timestamp, "Staking hasn't finished yet.");
-
-        uint reward = rewardPerDay * stakingPeriod[period[_tokenId]];
-        reward = reward * 10 ** (decimals - 3);
-
-        ITotosToken(tokenAddress).transfer(msg.sender, reward);
+        uint reward = calcReward(_tokenId);
+        if(reward > 0) {
+            ITotosToken(tokenAddress).transfer(tokenOwner[_tokenId], reward);
+        }
 
         onStaking[_tokenId] = false;
     }
 
-    function forceUnstake(uint _tokenId) external {
-        require(onStaking[_tokenId] == true, "This token is not on staking.");
-
+    function forceUnstake(uint _tokenId) external onlyOwner {
         onStaking[_tokenId] = false;
     }
 
+    function setTokenAddress(address _tokenAddress) external onlyOwner {
+        tokenAddress = _tokenAddress;
+    }
+
+    function calcReward(uint _tokenId) public view returns(uint) {
+        uint lct = lastClaimedTime[_tokenId];
+        uint step = (lct - startTime[_tokenId]) / stakingPeriod;
+        uint st = (step + 1) * stakingPeriod + startTime[_tokenId];
+        uint NOW = block.timestamp;
+
+        if(NOW - lct < minClaimPeriod) {
+            return 0;
+        }
+
+        if(NOW > startTime[_tokenId] + 4 * stakingPeriod) {
+            NOW = startTime[_tokenId] + 4 * stakingPeriod;
+        }
+
+        uint reward = 0;
+
+        while(NOW > st) {
+            reward += (st - lct) / stakingPeriodUnit * stakingRewards[step];
+            lct = st;
+            st += stakingPeriod;
+            step ++;
+        }
+        reward += (NOW - lct) / stakingPeriodUnit * stakingRewards[step];
+        reward *= multiplier[_tokenId];
+
+        return reward;
+    }
 }

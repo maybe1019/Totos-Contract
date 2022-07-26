@@ -88,8 +88,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\TotosStaking.sol": {
-      "lastModificationDate": 1658415725376,
-      "contentHash": "99de5d63182577e8f8e4fa9c78a4eaac",
+      "lastModificationDate": 1658813186497,
+      "contentHash": "77018b24d0a994d87dfb096680ef838f",
       "sourceName": "contracts/TotosStaking.sol",
       "solcConfig": {
         "version": "0.8.7",
