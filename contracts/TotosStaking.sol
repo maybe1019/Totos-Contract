@@ -94,10 +94,15 @@ contract TotosStaking is Ownable {
     uint rewardPerDay = 77;
     uint decimals = 18;
 
-    uint public stakingPeriodUnit = 1 days;
-    uint public minClaimPeriod = 7 * stakingPeriodUnit;
-    uint public stakingPeriod = 90 * stakingPeriodUnit;
+    uint public stakingPeriodUnit = 10 minutes;
+    uint public minClaimPeriod = 1 * stakingPeriodUnit;
+    uint public stakingPeriod = 144 * stakingPeriodUnit;
     uint[4] public stakingRewards = [0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
+
+    // uint public stakingPeriodUnit = 1 days;
+    // uint public minClaimPeriod = 7 * stakingPeriodUnit;
+    // uint public stakingPeriod = 90 * stakingPeriodUnit;
+    // uint[4] public stakingRewards = [0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
 
     mapping(uint => bool) public onStaking;
     mapping(uint => uint) public startTime;
