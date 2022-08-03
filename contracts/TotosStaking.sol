@@ -2,8 +2,6 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-import "hardhat/console.sol";
-
 interface ITotosToken {
     function totalSupply() external view returns (uint256);
     function balanceOf(address account) external view returns (uint256);
@@ -89,58 +87,45 @@ abstract contract Ownable is Context {
 }
 
 contract TotosStaking is Ownable {
-    address tokenAddress;
-
-    uint rewardPerDay = 77;
-    uint decimals = 18;
-
-    uint public stakingPeriodUnit = 10 minutes;
-    uint public minClaimPeriod = 1 * stakingPeriodUnit;
-    uint public stakingPeriod = 144 * stakingPeriodUnit;
-    uint[4] public stakingRewards = [0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
+    address public tokenAddress;
 
     // uint public stakingPeriodUnit = 1 days;
-    // uint public minClaimPeriod = 7 * stakingPeriodUnit;
-    // uint public stakingPeriod = 90 * stakingPeriodUnit;
-    // uint[4] public stakingRewards = [0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
+    // uint public stakingPeriodSection = 90;
+    // uint[5] public stakingRewards = [0, 0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
+
+    uint public stakingPeriodUnit = 1 hours;
+    uint public stakingPeriodSection = 72;
+    uint[5] public stakingRewards = [0, 0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
 
     mapping(uint => bool) public onStaking;
     mapping(uint => uint) public startTime;
+    mapping(uint => uint) public stakingPeriod;
     mapping(uint => uint) public multiplier;
-    mapping(uint => uint) public lastClaimedTime;
     mapping(uint => address) public tokenOwner;
 
     constructor(address _tokenAddress) {
         tokenAddress = _tokenAddress;
     }
 
-    function stake(uint _tokenId, address _tokenOwner, uint _multiplier) external onlyOwner returns(bool) {
+    function stake(uint _tokenId, address _tokenOwner, uint _stakingPeriod, uint _multiplier) external onlyOwner returns(bool) {
         require(onStaking[_tokenId] == false, "This token is already on staking.");
+        require(_stakingPeriod < 5 && _stakingPeriod > 0, "Something went wrong");
 
         onStaking[_tokenId] = true;
         startTime[_tokenId] = block.timestamp;
-        lastClaimedTime[_tokenId] = block.timestamp;
+        stakingPeriod[_tokenId] = _stakingPeriod;
         multiplier[_tokenId] = _multiplier;
         tokenOwner[_tokenId] = _tokenOwner;
 
         return true;
     }
 
-    function claimReward(uint _tokenId) external onlyOwner {
-        uint reward = calcReward(_tokenId);
-        require(reward > 0, "No Reward");
-
-        lastClaimedTime[_tokenId] = block.timestamp - (block.timestamp - lastClaimedTime[_tokenId]) % stakingPeriodUnit;
-        ITotosToken(tokenAddress).transfer(tokenOwner[_tokenId], reward);
-    }
-
     function unstake(uint _tokenId) external onlyOwner {
-        require(block.timestamp - startTime[_tokenId] >= minClaimPeriod, "You can't unstake before the min time.");
+        require(onStaking[_tokenId] == true, "This token isn't on staking.");
+        require(block.timestamp - startTime[_tokenId] >= stakingPeriod[_tokenId] * stakingPeriodSection * stakingPeriodUnit, "You can't unstake before the time.");
 
-        uint reward = calcReward(_tokenId);
-        if(reward > 0) {
-            ITotosToken(tokenAddress).transfer(tokenOwner[_tokenId], reward);
-        }
+        uint reward = stakingPeriod[_tokenId] * stakingPeriodSection * stakingRewards[stakingPeriod[_tokenId]] * multiplier[_tokenId];
+        ITotosToken(tokenAddress).transfer(tokenOwner[_tokenId], reward);
 
         onStaking[_tokenId] = false;
     }
@@ -151,33 +136,5 @@ contract TotosStaking is Ownable {
 
     function setTokenAddress(address _tokenAddress) external onlyOwner {
         tokenAddress = _tokenAddress;
-    }
-
-    function calcReward(uint _tokenId) public view returns(uint) {
-        uint lct = lastClaimedTime[_tokenId];
-        uint step = (lct - startTime[_tokenId]) / stakingPeriod;
-        uint st = (step + 1) * stakingPeriod + startTime[_tokenId];
-        uint NOW = block.timestamp;
-
-        if(NOW - lct < minClaimPeriod) {
-            return 0;
-        }
-
-        if(NOW > startTime[_tokenId] + 4 * stakingPeriod) {
-            NOW = startTime[_tokenId] + 4 * stakingPeriod;
-        }
-
-        uint reward = 0;
-
-        while(NOW > st) {
-            reward += (st - lct) / stakingPeriodUnit * stakingRewards[step];
-            lct = st;
-            st += stakingPeriod;
-            step ++;
-        }
-        reward += (NOW - lct) / stakingPeriodUnit * stakingRewards[step];
-        reward *= multiplier[_tokenId];
-
-        return reward;
     }
 }

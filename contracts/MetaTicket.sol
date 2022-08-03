@@ -1065,16 +1065,12 @@ library Strings {
 }
 
 
-
-// OpenZeppelin Contracts v4.4.1 (token/ERC721/ERC721.sol)
 contract MetaTicket is ERC1155, Ownable {
 
     using Strings for uint256;
 
     mapping(uint => uint) totalSupply;
     mapping(uint => string) private tokenUris;
-
-    uint[3] public ticketPrices = [0.033 ether, 0.066 ether, 0.099 ether];
 
     string public name = "Totos Meta Ticket";
     string public symbol = "TOTOS";
@@ -1087,9 +1083,8 @@ contract MetaTicket is ERC1155, Ownable {
 
     constructor() ERC1155("ipfs://") {}
 
-    function mint(uint tokenId, uint amount) public payable {
+    function mint(uint tokenId, uint amount) public payable onlyOwner {
         require(totalSupply[tokenId] + amount <= 333, "Total Supply Exceeds");
-        require(msg.value >= ticketPrices[tokenId-1] * amount, "Not enough funds.");
 
         totalSupply[tokenId] += amount;
         _mint(msg.sender, tokenId, amount, "");
@@ -1105,14 +1100,14 @@ contract MetaTicket is ERC1155, Ownable {
 
     function withdraw() external onlyOwner() {
         uint balance = address(this).balance;
-        payable(devAddress).transfer(balance * 5 / 100);
-        payable(msg.sender).transfer(balance * 95 / 100);
+        payable(devAddress).transfer(balance * 1 / 100);
+        payable(msg.sender).transfer(balance * 99 / 100);
     }
 
     function withdrawTo(address _to, uint _balance) external onlyOwner() {
         require(_balance <= address(this).balance, "Not enough");
-        payable(devAddress).transfer(_balance * 5 / 100);
-        payable(_to).transfer(_balance * 95 / 100);
+        payable(devAddress).transfer(_balance * 1 / 100);
+        payable(_to).transfer(_balance * 99 / 100);
     }
 
     function burn(address owner, uint tokenId) external {

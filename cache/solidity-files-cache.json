@@ -43,8 +43,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\MetaTicket.sol": {
-      "lastModificationDate": 1658678020455,
-      "contentHash": "cccc783bdaa1db8efe4da61ee7f7913b",
+      "lastModificationDate": 1659495485289,
+      "contentHash": "552c1cf400c721aa34f37e41a7dccd36",
       "sourceName": "contracts/MetaTicket.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -88,8 +88,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\TotosStaking.sol": {
-      "lastModificationDate": 1658813186497,
-      "contentHash": "77018b24d0a994d87dfb096680ef838f",
+      "lastModificationDate": 1659556355263,
+      "contentHash": "1ebcbd657288a0daaa04070b87455170",
       "sourceName": "contracts/TotosStaking.sol",
       "solcConfig": {
         "version": "0.8.7",
