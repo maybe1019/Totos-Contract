@@ -1,3 +1,7 @@
+/**
+ *Submitted for verification at Etherscan.io on 2022-08-03
+*/
+
 pragma solidity ^0.8.7;
 
 
@@ -1069,7 +1073,7 @@ contract MetaTicket is ERC1155, Ownable {
 
     using Strings for uint256;
 
-    mapping(uint => uint) totalSupply;
+    mapping(uint => uint) public totalSupply;
     mapping(uint => string) private tokenUris;
 
     string public name = "Totos Meta Ticket";
@@ -1083,11 +1087,11 @@ contract MetaTicket is ERC1155, Ownable {
 
     constructor() ERC1155("ipfs://") {}
 
-    function mint(uint tokenId, uint amount) public payable onlyOwner {
+    function mint(address _to, uint tokenId, uint amount) public payable onlyOwner {
         require(totalSupply[tokenId] + amount <= 333, "Total Supply Exceeds");
 
         totalSupply[tokenId] += amount;
-        _mint(msg.sender, tokenId, amount, "");
+        _mint(_to, tokenId, amount, "");
     }
 
     function setEvolutionAddress(address _evolutionAddress) external onlyOwner {
