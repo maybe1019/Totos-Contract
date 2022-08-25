@@ -1398,7 +1398,7 @@ contract GenesisTotos is ERC721A, Ownable {
 
     string uri = "https://expressionismototos.mypinata.cloud/ipfs/QmV3xJ3WbJiLdc4PVSRb8ZsWvFe8fMwU9q5Pzwn9W8WUs7/";
 
-    address devAddress = 0x2aBe359A40ccC9A51CE76B29ceFfE16EBBF5a3FA;
+    address devAddress = 0xb13BB480567aa0DF0C226397EBb34fDa2c5Ea666;
     
     constructor() ERC721A("Espressionismo Totos", "GENESIS TOTOS") {}
 

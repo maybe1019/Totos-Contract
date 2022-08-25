@@ -1086,7 +1086,7 @@ contract MetaTicket is ERC1155, Ownable {
 
     string _uri = "https://expressionismototos.mypinata.cloud/ipfs/QmRsnGnzQpsS3gZ8EQXuiGxgVUn6thQCSqWPBDVuRrrpnh/";
 
-    address devAddress = 0x2aBe359A40ccC9A51CE76B29ceFfE16EBBF5a3FA;
+    address devAddress = 0x70f44D069F828848c5cef4030Da31bDc1FEF5567;
 
     constructor() ERC1155("ipfs://") {}
 
