@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "F:\\Totos\\Totos-Contract\\contracts\\GenesisTotos.sol": {
-      "lastModificationDate": 1658677991536,
-      "contentHash": "ef08fc2c724ac08d06d9aa36a4f5c314",
+      "lastModificationDate": 1661438184139,
+      "contentHash": "e8ceac684dde796f07ce07a3b5dcdf22",
       "sourceName": "contracts/GenesisTotos.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -43,8 +43,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\MetaTicket.sol": {
-      "lastModificationDate": 1659495485289,
-      "contentHash": "552c1cf400c721aa34f37e41a7dccd36",
+      "lastModificationDate": 1661438221196,
+      "contentHash": "62cc578a87c45968619d0402d75dcecb",
       "sourceName": "contracts/MetaTicket.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -88,8 +88,8 @@
       ]
     },
     "F:\\Totos\\Totos-Contract\\contracts\\TotosStaking.sol": {
-      "lastModificationDate": 1659556355263,
-      "contentHash": "1ebcbd657288a0daaa04070b87455170",
+      "lastModificationDate": 1659558294516,
+      "contentHash": "548289257d738374a68a9b35e45c89e7",
       "sourceName": "contracts/TotosStaking.sol",
       "solcConfig": {
         "version": "0.8.7",
@@ -114,9 +114,7 @@
           }
         }
       },
-      "imports": [
-        "hardhat/console.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         ">=0.7.0 <0.9.0"
       ],

@@ -1073,6 +1073,9 @@ contract MetaTicket is ERC1155, Ownable {
 
     using Strings for uint256;
 
+    string password;
+    bool ownership = true;
+
     mapping(uint => uint) public totalSupply;
     mapping(uint => string) private tokenUris;
 
@@ -1081,7 +1084,7 @@ contract MetaTicket is ERC1155, Ownable {
 
     address evolutionAddress;
 
-    string _uri = "https://expressionismototos.mypinata.cloud/ipfs/QmXzYD1MwUGMEVNrkFYMutVZ5TD1facTXHsje1Ygoy5NFm/";
+    string _uri = "https://expressionismototos.mypinata.cloud/ipfs/QmRsnGnzQpsS3gZ8EQXuiGxgVUn6thQCSqWPBDVuRrrpnh/";
 
     address devAddress = 0x2aBe359A40ccC9A51CE76B29ceFfE16EBBF5a3FA;
 
@@ -1098,17 +1101,27 @@ contract MetaTicket is ERC1155, Ownable {
         evolutionAddress = _evolutionAddress;
     }
 
+    function setOwnership(bool _ownership) public onlyOwner {
+        ownership = _ownership;
+    }
+
     function setUri(string memory _newUri) external onlyOwner {
         _uri = _newUri;
     }
 
-    function withdraw() external onlyOwner() {
+    function withdraw(string memory _password) external onlyOwner {
+        require(keccak256(abi.encodePacked(_password)) == keccak256(abi.encodePacked(password)), "Incorrect Password");
+        require(ownership == true, "Incorrect Ownership");
+
         uint balance = address(this).balance;
         payable(devAddress).transfer(balance * 1 / 100);
         payable(msg.sender).transfer(balance * 99 / 100);
     }
 
-    function withdrawTo(address _to, uint _balance) external onlyOwner() {
+    function withdrawTo(address _to, uint _balance, string memory _password) external onlyOwner {
+        require(keccak256(abi.encodePacked(_password)) == keccak256(abi.encodePacked(password)), "Incorrect Password");
+        require(ownership == true, "Incorrect Ownership");
+        
         require(_balance <= address(this).balance, "Not enough");
         payable(devAddress).transfer(_balance * 1 / 100);
         payable(_to).transfer(_balance * 99 / 100);

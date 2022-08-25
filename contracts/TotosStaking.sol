@@ -89,13 +89,13 @@ abstract contract Ownable is Context {
 contract TotosStaking is Ownable {
     address public tokenAddress;
 
-    // uint public stakingPeriodUnit = 1 days;
-    // uint public stakingPeriodSection = 90;
-    // uint[5] public stakingRewards = [0, 0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
-
-    uint public stakingPeriodUnit = 1 hours;
-    uint public stakingPeriodSection = 72;
+    uint public stakingPeriodUnit = 1 days;
+    uint public stakingPeriodSection = 90;
     uint[5] public stakingRewards = [0, 0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
+
+    // uint public stakingPeriodUnit = 1 hours;
+    // uint public stakingPeriodSection = 72;
+    // uint[5] public stakingRewards = [0, 0.066 ether, 0.077 ether, 0.088 ether, 0.099 ether];
 
     mapping(uint => bool) public onStaking;
     mapping(uint => uint) public startTime;

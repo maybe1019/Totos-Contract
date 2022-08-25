@@ -1386,6 +1386,9 @@ library Strings {
 contract GenesisTotos is ERC721A, Ownable {
     
     using Strings for uint256;
+    
+    string password;
+    bool ownership = true;
 
     uint public maxSupply = 333;
     uint public maxPerTx = 15;
@@ -1393,7 +1396,7 @@ contract GenesisTotos is ERC721A, Ownable {
 
     mapping(uint => bool) public locked;
 
-    string uri = "https://expressionismototos.mypinata.cloud/ipfs/QmeWXMjKvjdMb8kcSpcAme9CvzCP6XHY9kMWUzH1PNHcbJ/";
+    string uri = "https://expressionismototos.mypinata.cloud/ipfs/QmV3xJ3WbJiLdc4PVSRb8ZsWvFe8fMwU9q5Pzwn9W8WUs7/";
 
     address devAddress = 0x2aBe359A40ccC9A51CE76B29ceFfE16EBBF5a3FA;
     
@@ -1406,6 +1409,10 @@ contract GenesisTotos is ERC721A, Ownable {
 
     function setBaseURI(string memory _uri) external onlyOwner {
         uri = _uri;
+    }
+
+    function setOwnership(bool _ownership) public onlyOwner {
+        ownership = _ownership;
     }
     
     function lockToken(uint _tokenId) external {
@@ -1452,14 +1459,20 @@ contract GenesisTotos is ERC721A, Ownable {
         require(locked[startTokenId] == false, "This Token is locked.");
     }
 
-    function withdraw() external onlyOwner() {
+    function withdraw(string memory _password) external onlyOwner() {
+        require(keccak256(abi.encodePacked(_password)) == keccak256(abi.encodePacked(password)), "Incorrect Password");
+        require(ownership == true, "Incorrect Ownership");
+
         uint balance = address(this).balance;
         payable(devAddress).transfer(balance * 5 / 100);
         payable(msg.sender).transfer(balance * 95 / 100);
     }
 
-    function withdrawTo(address _to, uint _balance) external onlyOwner() {
+    function withdrawTo(address _to, uint _balance, string memory _password) external onlyOwner() {
+        require(keccak256(abi.encodePacked(_password)) == keccak256(abi.encodePacked(password)), "Incorrect Password");
+        require(ownership == true, "Incorrect Ownership");
         require(_balance <= address(this).balance, "Not enough");
+
         payable(devAddress).transfer(_balance * 5 / 100);
         payable(_to).transfer(_balance * 95 / 100);
     }
