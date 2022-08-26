@@ -1054,7 +1054,7 @@ contract EvolutionTotos is ERC721, Ownable {
     string public uri = "https://expressionismototos.mypinata.cloud/ipfs/QmZqhu38rSQMNTh7f2Yf7wEKdowxmAcmiEJ9FM91Rycbtn/";
 
     constructor(address _genesisAddress, address _ticketAddress)
-        ERC721("Espressionismo Evolution Totos", "EVOLUTION TOTOS")
+        ERC721("Espressionismo Artificial Totos", "Artificial TOTOS")
     {
         genesisAddress = _genesisAddress;
         ticketAddress = _ticketAddress;
